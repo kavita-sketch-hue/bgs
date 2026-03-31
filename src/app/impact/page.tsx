@@ -21,14 +21,18 @@ import {
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 
-// Dynamic import for PDF components to avoid SSR issues
-const PDFDownloadLink = dynamic(
-  () => import("@react-pdf/renderer").then((mod) => mod.PDFDownloadLink),
-  { ssr: false }
-)
-const SustainabilityCertificate = dynamic(
-  () => import("@/components/reporting/SustainabilityCertificate").then((mod) => mod.SustainabilityCertificate),
-  { ssr: false }
+// Dynamic import for PDF downloader to avoid SSR issues and Turbopack identification errors
+const ImpactReportDownloader = dynamic(
+  () => import("@/components/reporting/ImpactReportDownloader"),
+  { 
+    ssr: false,
+    loading: () => (
+      <Button variant="outline" className="flex items-center gap-2" disabled>
+        <Download className="h-4 w-4" />
+        Preparing...
+      </Button>
+    )
+  }
 )
 
 export default function ImpactStatsPage() {
@@ -44,27 +48,14 @@ export default function ImpactStatsPage() {
             <Share2 className="h-4 w-4" />
             Share Report
           </Button>
-          <PDFDownloadLink
-            document={
-              <SustainabilityCertificate 
-                organization="Acme Corp" 
-                month="March" 
-                year="2026" 
-                dollarsSaved="$124,500"
-                co2Avoided="8,240 kg"
-                landfillDiverted="1,120 kg"
-              />
-            }
-            fileName="EcoLoop_Sustainability_Certificate_March_2026.pdf"
-          >
-            {/* @ts-ignore */}
-            {({ loading }) => (
-              <Button className="flex items-center gap-2 font-bold" disabled={loading}>
-                <Download className="h-4 w-4" />
-                {loading ? "Generating..." : "Download Certificate"}
-              </Button>
-            )}
-          </PDFDownloadLink>
+          <ImpactReportDownloader 
+            organization="Acme Corp"
+            month="March"
+            year="2026"
+            dollarsSaved="$124,500"
+            co2Avoided="8,240 kg"
+            landfillDiverted="1,120 kg"
+          />
         </div>
       </div>
 
