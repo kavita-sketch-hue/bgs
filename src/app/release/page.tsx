@@ -156,7 +156,7 @@ export default function ReleaseAssetsPage() {
                 <Label htmlFor="category">Category</Label>
                 <Select 
                   value={formData.category || ""} 
-                  onValueChange={(val) => setFormData({...formData, category: val})}
+                  onValueChange={(val) => setFormData({...formData, category: val || ""})}
                 >
                   <SelectTrigger className="bg-background border-0">
                     <SelectValue placeholder="Select category" />
@@ -173,7 +173,7 @@ export default function ReleaseAssetsPage() {
                 <Label htmlFor="condition">Condition Grade</Label>
                 <Select 
                   value={formData.condition || ""} 
-                  onValueChange={(val) => setFormData({...formData, condition: val})}
+                  onValueChange={(val) => setFormData({...formData, condition: val || ""})}
                 >
                   <SelectTrigger className="bg-background border-0">
                     <SelectValue placeholder="Select condition" />
